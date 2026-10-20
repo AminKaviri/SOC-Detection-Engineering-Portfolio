@@ -9,20 +9,23 @@ A defensive detection-engineering workstream focused on readable Sigma rules, ex
 
 These are starting points, not claims that each rule is production-ready. Validate field mappings and behavior in your SIEM/EDR backend before deployment.
 
-## Validate basic metadata
+## Validate locally
+
 Python 3.10+ and PyYAML are required:
+
 ```bash
 python -m pip install -r requirements-dev.txt
 python scripts/validate_rules.py
+python -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-The validator checks parseability and required Sigma metadata. It does **not** prove conversion, matching, performance, or operational efficacy.
+The metadata validator checks YAML parseability and required Sigma fields. The fixture tests execute a deliberately narrow evaluator for the field operators and condition used by the encoded-PowerShell rule, then assert that the positive fixture matches and the benign negative fixture does not. They are **not** a general Sigma interpreter, backend conversion test, or proof of operational efficacy.
 
 ## Lifecycle
 1. Define behavior and a defensible hypothesis.
 2. Confirm telemetry source and field mapping.
 3. Write the rule and ATT&CK context when justified.
 4. Prepare expected-match and expected-non-match examples.
-5. Review false positives and benign administrative uses.
+5. Run the narrow fixture assertions and review false positives.
 6. Convert and test against the target platform.
 7. Version, document, monitor, and tune.
