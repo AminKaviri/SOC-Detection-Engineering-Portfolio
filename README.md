@@ -1,44 +1,39 @@
-# Security Scripts — SOC & Detection Engineering Portfolio
+# Amin Kaviri — SOC Analyst T2 & Defensive Security Portfolio
 
-A practical cybersecurity portfolio focused on SOC Tier 2 workflows, detection engineering, threat hunting, log analysis, and incident response.
+Practical work focused on SOC Tier 2 investigation, detection engineering, threat hunting, incident response, and progressive development toward security architecture.
 
-> **Scope:** Educational and defensive security work using synthetic or authorized data. Never commit production logs, secrets, credentials, or customer information.
+> **Data handling:** examples use synthetic or authorized data. Do not commit production logs, credentials, personal data, internal hostnames, or customer information.
 
-## Portfolio roadmap
+## Workstreams
 
-| Workstream | Objective | Evidence |
+| Project | Focus | Current evidence |
 |---|---|---|
-| Detection engineering | Develop, document, and validate Sigma detections | Rule metadata, test fixtures, false-positive notes |
-| SOC investigations | Turn alerts into repeatable investigations | Triage checklists, investigation reports, evidence timelines |
-| Threat hunting | Form hypotheses and test them against telemetry | Hunt plans, queries, findings, limitations |
-| Incident response | Standardize containment, eradication, and recovery decisions | Playbooks, decision points, post-incident review templates |
-| ATT&CK coverage | Map detection ideas to MITRE ATT&CK techniques | Coverage matrix with confidence and validation status |
-| Engineering quality | Keep content reproducible and maintainable | Tests, CI, usage instructions, changelog |
+| [Sigma Detection Engineering](./sigma-detection-engineering/) | Detection logic, synthetic fixtures, basic content validation | Three candidate Windows rules; YAML/metadata validator |
+| [SOC Investigation Lab](./soc-investigation-lab/) | Alert triage and evidence-led investigations | Case report template and investigation principles |
+| [Threat Hunting Lab](./threat-hunting-lab/) | Hypothesis-driven hunts and telemetry requirements | Hunt plan template |
+| [Incident Response Playbooks](./incident-response-playbooks/) | Escalation, containment, recovery, and lessons learned | Playbook template |
+| [MITRE ATT&CK Coverage](./mitre-attack-coverage/) | Traceable technique mapping and evidence states | Initial candidate coverage matrix |
+| [Profile README draft](./profile-README/README.md) | Public-facing portfolio overview | Draft ready to adapt to the special profile repository |
 
-## Planned structure
+## Engineering principles
 
-- `sigma-detection-engineering/` — Sigma rules, synthetic test cases, and validation workflow
-- `soc-investigation-lab/` — alert triage and evidence-based case reports
-- `threat-hunting-lab/` — hypothesis-driven hunt plans and query examples
-- `incident-response-playbooks/` — actionable response procedures
-- `mitre-attack-coverage/` — traceable coverage mapping
+1. **Evidence over claims:** separate observations, hypotheses, and conclusions.
+2. **Reproducibility:** document prerequisites, inputs, expected outputs, and validation limits.
+3. **Operational value:** include triage steps, escalation criteria, false-positive handling, and follow-up.
+4. **Honest testing:** metadata checks are not backend conversion or detection tests.
+5. **Defensive scope:** use authorized environments and approved procedures.
 
-## Working principles
+## Current validation status
 
-1. **Evidence over claims:** separate observed facts, inferences, and unknowns.
-2. **Reproducibility:** explain prerequisites, inputs, expected outputs, and validation.
-3. **Safe data handling:** use synthetic data; sanitize all examples.
-4. **Honest validation:** distinguish syntax/metadata checks from actual backend execution.
-5. **Operational usefulness:** include triage steps, escalation criteria, and tuning guidance.
+The Sigma lab includes a validator for YAML parsing, key metadata, unique IDs, and a detection condition. Synthetic JSON fixtures document expected-match/non-match intent but are not automatically executed against a SIEM. All candidate rules require backend conversion, representative replay testing, and environment-specific tuning before operational use.
 
 ## Roadmap
 
-- [ ] Validate the project structure and remove broken references
-- [ ] Add CI checks for detection content
-- [ ] Publish an end-to-end SOC investigation using synthetic telemetry
-- [ ] Add ATT&CK mapping and coverage criteria
-- [ ] Add quality gates and release notes
+- [x] Establish project structure and core documentation
+- [x] Add starter detection rules and a lightweight validator
+- [ ] Run the validator in GitHub Actions and verify the workflow result
+- [ ] Add executable backend/event tests
+- [ ] Publish a fully worked, sanitized SOC investigation
+- [ ] Expand ATT&CK mappings based on test evidence rather than tags alone
 
-## Disclaimer
-
-This repository is for defensive security education and authorized environments only. Detection results depend on available telemetry, backend behavior, and environment-specific tuning.
+Portfolio direction: **SOC Analyst T2 → Detection Engineering → Threat Hunting → Incident Response → Security Architecture**.
