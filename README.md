@@ -1,25 +1,31 @@
-# Security Scripts — SOC & Detection Engineering Portfolio
+# 🛡️ Security Scripts
 
-This repository is being reorganized into a focused defensive-security portfolio. The active portfolio content is currently staged in the [portfolio-staging branch](https://github.com/AminKaviri/Security-Scripts/tree/portfolio-staging) while the repository layout is being finalized.
+A personal collection of cybersecurity learning projects, research experiments, and automation scripts.  
+This repository documents my journey in developing practical skills in **threat analysis**, **log forensics**, and **security tool development** with Python.
 
-## Portfolio workstreams
+---
 
-- [Sigma Detection Engineering](https://github.com/AminKaviri/Security-Scripts/tree/portfolio-staging/sigma-detection-engineering) — three candidate Windows rules, metadata validation, and false-positive analysis.
-- [SOC Investigation Lab](https://github.com/AminKaviri/Security-Scripts/tree/portfolio-staging/soc-investigation-lab) — case-report template and a synthetic encoded-PowerShell investigation.
-- [Threat Hunting Lab](https://github.com/AminKaviri/Security-Scripts/tree/portfolio-staging/threat-hunting-lab) — hunt plan template and a contextual PowerShell hunt.
-- [Incident Response Playbooks](https://github.com/AminKaviri/Security-Scripts/tree/portfolio-staging/incident-response-playbooks) — response workflow template.
-- [MITRE ATT&CK Coverage](https://github.com/AminKaviri/Security-Scripts/tree/portfolio-staging/mitre-attack-coverage) — candidate mappings with explicit evidence status.
-- [Profile README draft](https://github.com/AminKaviri/Security-Scripts/blob/portfolio-staging/profile-README/README.md) — a public-facing profile draft.
+## 🎯 Purpose
 
-## Validation
+This repository serves two purposes:
 
-The [GitHub Actions validation run](https://github.com/AminKaviri/Security-Scripts/actions/runs/39493942416) passed the basic Sigma YAML/metadata checks for three rules. It does not prove backend conversion or detection efficacy. The candidate rules still require target-backend testing, representative replay, and environment-specific tuning.
+1. **Learning Documentation** – Recording my progress, findings, and experiments while studying cybersecurity concepts.
+2. **Reusable Tools** – Building small, replicable Python scripts
 
-## Principles
+---
 
-- Use synthetic or explicitly authorized telemetry.
-- Separate observed facts, hypotheses, and conclusions.
-- Document false positives, limitations, and telemetry dependencies.
-- Never commit production logs, credentials, or customer information.
+## 🔧 How to Use
 
-Career direction: **SOC Analyst T2 → Detection Engineering → Threat Hunting → Incident Response → Security Architecture**.
+Clone and run any script directly:
+```bash
+git clone https://github.com/<your-username>/security-scripts.git
+cd security-scripts/log_pattern_detector
+python3 log_pattern_detector.py --help
+```
+
+📄 License
+This repository is shared under the MIT License — feel free to reuse or adapt any code with credit.
+
+📬 Contact
+Amin Kaviri
+📧 kaviriproject@gmail.com
