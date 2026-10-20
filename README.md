@@ -1,44 +1,25 @@
 # Security Scripts — SOC & Detection Engineering Portfolio
 
-A practical cybersecurity portfolio focused on SOC Tier 2 workflows, detection engineering, threat hunting, log analysis, and incident response.
+This repository is being reorganized into a focused defensive-security portfolio. The active portfolio content is currently staged in the [portfolio-staging branch](https://github.com/AminKaviri/Security-Scripts/tree/portfolio-staging) while the repository layout is being finalized.
 
-> **Scope:** Educational and defensive security work using synthetic or authorized data. Never commit production logs, secrets, credentials, or customer information.
+## Portfolio workstreams
 
-## Portfolio roadmap
+- [Sigma Detection Engineering](https://github.com/AminKaviri/Security-Scripts/tree/portfolio-staging/sigma-detection-engineering) — three candidate Windows rules, metadata validation, and false-positive analysis.
+- [SOC Investigation Lab](https://github.com/AminKaviri/Security-Scripts/tree/portfolio-staging/soc-investigation-lab) — case-report template and a synthetic encoded-PowerShell investigation.
+- [Threat Hunting Lab](https://github.com/AminKaviri/Security-Scripts/tree/portfolio-staging/threat-hunting-lab) — hunt plan template and a contextual PowerShell hunt.
+- [Incident Response Playbooks](https://github.com/AminKaviri/Security-Scripts/tree/portfolio-staging/incident-response-playbooks) — response workflow template.
+- [MITRE ATT&CK Coverage](https://github.com/AminKaviri/Security-Scripts/tree/portfolio-staging/mitre-attack-coverage) — candidate mappings with explicit evidence status.
+- [Profile README draft](https://github.com/AminKaviri/Security-Scripts/blob/portfolio-staging/profile-README/README.md) — a public-facing profile draft.
 
-| Workstream | Objective | Evidence |
-|---|---|---|
-| Detection engineering | Develop, document, and validate Sigma detections | Rule metadata, test fixtures, false-positive notes |
-| SOC investigations | Turn alerts into repeatable investigations | Triage checklists, investigation reports, evidence timelines |
-| Threat hunting | Form hypotheses and test them against telemetry | Hunt plans, queries, findings, limitations |
-| Incident response | Standardize containment, eradication, and recovery decisions | Playbooks, decision points, post-incident review templates |
-| ATT&CK coverage | Map detection ideas to MITRE ATT&CK techniques | Coverage matrix with confidence and validation status |
-| Engineering quality | Keep content reproducible and maintainable | Tests, CI, usage instructions, changelog |
+## Validation
 
-## Planned structure
+The [GitHub Actions validation run](https://github.com/AminKaviri/Security-Scripts/actions/runs/39493942416) passed the basic Sigma YAML/metadata checks for three rules. It does not prove backend conversion or detection efficacy. The candidate rules still require target-backend testing, representative replay, and environment-specific tuning.
 
-- `sigma-detection-engineering/` — Sigma rules, synthetic test cases, and validation workflow
-- `soc-investigation-lab/` — alert triage and evidence-based case reports
-- `threat-hunting-lab/` — hypothesis-driven hunt plans and query examples
-- `incident-response-playbooks/` — actionable response procedures
-- `mitre-attack-coverage/` — traceable coverage mapping
+## Principles
 
-## Working principles
+- Use synthetic or explicitly authorized telemetry.
+- Separate observed facts, hypotheses, and conclusions.
+- Document false positives, limitations, and telemetry dependencies.
+- Never commit production logs, credentials, or customer information.
 
-1. **Evidence over claims:** separate observed facts, inferences, and unknowns.
-2. **Reproducibility:** explain prerequisites, inputs, expected outputs, and validation.
-3. **Safe data handling:** use synthetic data; sanitize all examples.
-4. **Honest validation:** distinguish syntax/metadata checks from actual backend execution.
-5. **Operational usefulness:** include triage steps, escalation criteria, and tuning guidance.
-
-## Roadmap
-
-- [ ] Validate the project structure and remove broken references
-- [ ] Add CI checks for detection content
-- [ ] Publish an end-to-end SOC investigation using synthetic telemetry
-- [ ] Add ATT&CK mapping and coverage criteria
-- [ ] Add quality gates and release notes
-
-## Disclaimer
-
-This repository is for defensive security education and authorized environments only. Detection results depend on available telemetry, backend behavior, and environment-specific tuning.
+Career direction: **SOC Analyst T2 → Detection Engineering → Threat Hunting → Incident Response → Security Architecture**.
