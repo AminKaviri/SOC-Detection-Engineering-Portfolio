@@ -31,7 +31,7 @@ The Sigma lab includes a validator for YAML parsing, key metadata, unique IDs, a
 
 - [x] Establish project structure and core documentation
 - [x] Add starter detection rules and a lightweight validator
-- [ ] Run the validator in GitHub Actions and verify the workflow result
+- [x] Run the validator in GitHub Actions (workflow passed)
 - [ ] Add executable backend/event tests
 - [ ] Publish a fully worked, sanitized SOC investigation
 - [ ] Expand ATT&CK mappings based on test evidence rather than tags alone
