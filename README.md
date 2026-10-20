@@ -8,7 +8,7 @@ Practical work focused on SOC Tier 2 investigation, detection engineering, threa
 
 | Project | Focus | Current evidence |
 |---|---|---|
-| [Sigma Detection Engineering](./sigma-detection-engineering/) | Detection logic, synthetic fixtures, basic content validation | Three candidate Sigma rules; YAML/metadata validator; executable positive/negative fixture assertions for the encoded-PowerShell rule; [false-positive analysis](./sigma-detection-engineering/docs/false-positive-analysis.md) |
+| [Sigma Detection Engineering](./sigma-detection-engineering/) | Detection logic, synthetic fixtures, basic content validation | Three candidate Sigma rules; YAML/metadata validator; executable positive/negative fixture assertions for the encoded-PowerShell rule; [Splunk SPL companion queries](./sigma-detection-engineering/splunk/README.md); [false-positive analysis](./sigma-detection-engineering/docs/false-positive-analysis.md) |
 | [SOC Investigation Lab](./soc-investigation-lab/) | Alert triage and evidence-led investigations | [Synthetic case study: encoded PowerShell alert](./soc-investigation-lab/cases/CASE-001-encoded-powershell.md) and reusable case-report template |
 | [Threat Hunting Lab](./threat-hunting-lab/) | Hypothesis-driven hunts and telemetry requirements | [Hunt 001: contextual PowerShell risk](./threat-hunting-lab/hunts/HUNT-001-encoded-powershell.md) and hunt-plan template |
 | [Incident Response Playbooks](./incident-response-playbooks/) | Escalation, containment, recovery, and lessons learned | Playbook template |
@@ -25,7 +25,7 @@ Practical work focused on SOC Tier 2 investigation, detection engineering, threa
 
 ## Current validation status
 
-The GitHub Actions workflow validates Sigma YAML/metadata and executes narrow positive/negative fixture assertions for the encoded-PowerShell rule. These assertions evaluate only the specific field operators and condition used by that rule; they are not a general Sigma interpreter and do not prove SIEM/backend conversion or detection efficacy. All candidate rules require backend conversion, representative replay testing, and environment-specific tuning before operational use.
+The GitHub Actions workflow validates Sigma YAML/metadata and executes narrow positive/negative fixture assertions for the encoded-PowerShell rule. The Splunk SPL companion provides queries, field/index assumptions, false-positive guidance, and positive/negative test scenarios for all three starter detections; the SPL has not been executed against a live Splunk instance. Fixture assertions are not a general Sigma interpreter and do not prove SIEM/backend conversion or detection efficacy. All candidate rules require backend conversion, representative replay testing, and environment-specific tuning before operational use.
 
 ## Roadmap
 
@@ -33,6 +33,7 @@ The GitHub Actions workflow validates Sigma YAML/metadata and executes narrow po
 - [x] Add starter detection rules and a lightweight validator
 - [x] Run the validator in GitHub Actions
 - [x] Add executable positive/negative fixture assertions for the encoded-PowerShell rule
+- [x] Add Splunk SPL companions for all three starter detections
 - [x] Publish a worked synthetic SOC investigation case study
 - [x] Document an initial threat-hunt workflow and tuning considerations
 - [ ] Add actual Sigma backend conversion and representative event-replay tests
