@@ -8,7 +8,7 @@ Practical work focused on SOC Tier 2 investigation, detection engineering, threa
 
 | Project | Focus | Current evidence |
 |---|---|---|
-| [Sigma Detection Engineering](./sigma-detection-engineering/) | Detection logic, synthetic fixtures, basic content validation | Three candidate Windows rules; metadata validator; [false-positive analysis](./sigma-detection-engineering/docs/false-positive-analysis.md) |
+| [Sigma Detection Engineering](./sigma-detection-engineering/) | Detection logic, synthetic fixtures, basic content validation | Three candidate Sigma rules; YAML/metadata validator; executable positive/negative fixture assertions for the encoded-PowerShell rule; [false-positive analysis](./sigma-detection-engineering/docs/false-positive-analysis.md) |
 | [SOC Investigation Lab](./soc-investigation-lab/) | Alert triage and evidence-led investigations | [Synthetic case study: encoded PowerShell alert](./soc-investigation-lab/cases/CASE-001-encoded-powershell.md) and reusable case-report template |
 | [Threat Hunting Lab](./threat-hunting-lab/) | Hypothesis-driven hunts and telemetry requirements | [Hunt 001: contextual PowerShell risk](./threat-hunting-lab/hunts/HUNT-001-encoded-powershell.md) and hunt-plan template |
 | [Incident Response Playbooks](./incident-response-playbooks/) | Escalation, containment, recovery, and lessons learned | Playbook template |
@@ -20,21 +20,22 @@ Practical work focused on SOC Tier 2 investigation, detection engineering, threa
 1. **Evidence over claims:** separate observations, hypotheses, and conclusions.
 2. **Reproducibility:** document prerequisites, inputs, expected outputs, and validation limits.
 3. **Operational value:** include triage steps, escalation criteria, false-positive handling, and follow-up.
-4. **Honest testing:** metadata checks are not backend conversion or detection tests.
+4. **Honest testing:** metadata checks and narrow fixture assertions are not backend conversion or SIEM detection tests.
 5. **Defensive scope:** use authorized environments and approved procedures.
 
 ## Current validation status
 
-The GitHub Actions workflow ran successfully for the basic Sigma YAML/metadata validator. Synthetic JSON fixtures document expected-match/non-match intent but are not automatically executed against a SIEM. All candidate rules require backend conversion, representative replay testing, and environment-specific tuning before operational use.
+The GitHub Actions workflow validates Sigma YAML/metadata and executes narrow positive/negative fixture assertions for the encoded-PowerShell rule. These assertions evaluate only the specific field operators and condition used by that rule; they are not a general Sigma interpreter and do not prove SIEM/backend conversion or detection efficacy. All candidate rules require backend conversion, representative replay testing, and environment-specific tuning before operational use.
 
 ## Roadmap
 
 - [x] Establish project structure and core documentation
 - [x] Add starter detection rules and a lightweight validator
-- [x] Run the validator in GitHub Actions (workflow passed)
+- [x] Run the validator in GitHub Actions
+- [x] Add executable positive/negative fixture assertions for the encoded-PowerShell rule
 - [x] Publish a worked synthetic SOC investigation case study
 - [x] Document an initial threat-hunt workflow and tuning considerations
-- [ ] Add executable backend/event tests
+- [ ] Add actual Sigma backend conversion and representative event-replay tests
 - [ ] Expand ATT&CK mappings based on test evidence rather than tags alone
 
 Portfolio direction: **SOC Analyst T2 → Detection Engineering → Threat Hunting → Incident Response → Security Architecture**.
