@@ -1,0 +1,26 @@
+name: Validate Sigma content
+
+on:
+  push:
+    paths:
+      - "sigma-detection-engineering/**"
+      - ".github/workflows/validate-sigma.yml"
+  pull_request:
+    paths:
+      - "sigma-detection-engineering/**"
+      - ".github/workflows/validate-sigma.yml"
+  workflow_dispatch:
+
+jobs:
+  metadata-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sigma-detection-engineering
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python scripts/validate_rules.py
