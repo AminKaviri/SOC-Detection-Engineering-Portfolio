@@ -1,0 +1,10 @@
+{
+  "case": "expected-non-match",
+  "description": "Synthetic benign PowerShell command contains no encoded-command switch.",
+  "event": {
+    "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "CommandLine": "powershell.exe -NoProfile -Command Get-Process"
+  },
+  "expected_rule_not": "d9f2b3a2-2e3a-4b9d-9c9a-5d4e9f0d0121",
+  "note": "Fixture documents test intent; rule-engine execution is required."
+}

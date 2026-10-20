@@ -1,0 +1,28 @@
+title: Suspicious PowerShell Encoded Command
+id: d9f2b3a2-2e3a-4b9d-9c9a-5d4e9f0d0121
+status: experimental
+description: Detects PowerShell command lines that include common encoded-command switches. Validate field mappings and tune approved automation in the target environment.
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+author: Amin Kaviri
+date: 2026/10/21
+tags:
+  - attack.execution
+  - attack.t1059.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_image:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+  selection_switch:
+    CommandLine|contains:
+      - ' -enc '
+      - ' -encodedcommand '
+      - ' -e '
+  condition: selection_image and selection_switch
+falsepositives:
+  - Approved administrative scripts and endpoint-management tooling
+level: medium

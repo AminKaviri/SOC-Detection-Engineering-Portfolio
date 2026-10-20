@@ -1,0 +1,10 @@
+{
+  "case": "expected-match",
+  "description": "Synthetic PowerShell command line contains an encoded-command switch.",
+  "event": {
+    "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "CommandLine": "powershell.exe -enc VwByAGkAdABlAC0ATwB1AHQAcAB1AHQA"
+  },
+  "expected_rule": "d9f2b3a2-2e3a-4b9d-9c9a-5d4e9f0d0121",
+  "note": "Fixture documents test intent; use a Sigma backend to verify matching."
+}

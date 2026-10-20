@@ -1,0 +1,23 @@
+title: Windows Service Creation Using System Utility
+id: 2f3f9821-9e81-4f25-bab1-5e178f0d0123
+status: experimental
+description: Flags service-control utility use that may create a service. Review parent process, service path, signer, account, and change records before escalation.
+references:
+  - https://attack.mitre.org/techniques/T1543/003/
+author: Amin Kaviri
+date: 2026/10/21
+tags:
+  - attack.persistence
+  - attack.t1543.003
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_image:
+    Image|endswith: '\sc.exe'
+  selection_create:
+    CommandLine|contains: ' create '
+  condition: selection_image and selection_create
+falsepositives:
+  - Authorized software installation and endpoint management
+level: medium

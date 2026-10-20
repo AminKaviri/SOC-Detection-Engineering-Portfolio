@@ -1,0 +1,4 @@
+technique_id,technique_name,workstream,artifact,telemetry_required,status,confidence,evidence,known_gaps,owner,review_date
+T1059.001,PowerShell,Detection Engineering,Suspicious PowerShell Encoded Command,Windows process creation,Planned,Low,Synthetic fixture only,Backend conversion and replay not yet performed,Unassigned,2026-10-21
+T1110,Brute Force,Detection Engineering,Multiple Failed Logons from a Single Source,Windows Security Event 4625,Planned,Low,Rule metadata only,Backend-specific threshold aggregation required,Unassigned,2026-10-21
+T1543.003,Windows Service,Detection Engineering,Windows Service Creation Using System Utility,Windows process creation and service events,Planned,Low,Rule metadata only,Needs service context and lab replay,Unassigned,2026-10-21
