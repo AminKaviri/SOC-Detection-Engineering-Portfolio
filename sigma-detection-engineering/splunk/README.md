@@ -18,15 +18,15 @@ These SPL examples accompany the three candidate Sigma rules in `rules/windows/`
 index=windows sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1
 | eval image_l=lower(coalesce(Image, New_Process_Name, process_path, ""))
 | eval cmd_l=lower(coalesce(CommandLine, Process_Command_Line, process, ""))
-| where (like(image_l, "%\\powershell.exe") OR like(image_l, "%\\pwsh.exe"))
-| where match(cmd_l, "(^|\\s)-(enc|encodedcommand|e)(\\s|$)")
+| where (like(image_l, "%\powershell.exe") OR like(image_l, "%\pwsh.exe"))
+| where match(cmd_l, "(^|\s)-(enc|encodedcommand|e)(\s|$)")
 | eval detection_name="Suspicious PowerShell encoded command"
 | table _time host User Image CommandLine ParentImage ParentCommandLine detection_name
 | sort - _time
 ```
 
-**Positive test:** A synthetic process event where `Image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe` and `CommandLine=powershell.exe -EncodedCommand SQBFAFgA` should match.  
-**Negative test:** A synthetic event where `Image=C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe` and `CommandLine=powershell.exe -NoProfile -File inventory.ps1` should not match.  
+**Positive test:** A synthetic process event where `Image=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe` and `CommandLine=powershell.exe -EncodedCommand SQBFAFgA` should match.  
+**Negative test:** A synthetic event where `Image=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe` and `CommandLine=powershell.exe -NoProfile -File inventory.ps1` should not match.  
 **False positives / tuning:** Approved software deployment, endpoint management, and administrative scripts may use encoded arguments. Do not globally exclude encoded PowerShell; prefer scoped, owner-attributed exceptions with expiry. This query intentionally matches a switch, not whether the decoded payload is malicious.
 
 ## 2. Repeated failed logons from one source
@@ -62,15 +62,15 @@ index=windows sourcetype="XmlWinEventLog:Security" EventCode=4625
 index=windows sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1
 | eval image_l=lower(coalesce(Image, New_Process_Name, process_path, ""))
 | eval cmd_l=lower(coalesce(CommandLine, Process_Command_Line, process, ""))
-| where like(image_l, "%\\sc.exe")
-| where match(cmd_l, "(^|\\s)create(\\s|$)")
+| where like(image_l, "%\sc.exe")
+| where match(cmd_l, "(^|\s)create(\s|$)")
 | eval detection_name="Windows service creation using sc.exe"
 | table _time host User Image CommandLine ParentImage ParentCommandLine detection_name
 | sort - _time
 ```
 
-**Positive test:** A synthetic process event with `Image=C:\\Windows\\System32\\sc.exe` and `CommandLine=sc.exe create ExampleSvc binPath= C:\\Temp\\agent.exe` should match.  
-**Negative test:** A synthetic event with `Image=C:\\Windows\\System32\\sc.exe` and `CommandLine=sc.exe query ExampleSvc` should not match.  
+**Positive test:** A synthetic process event with `Image=C:\Windows\System32\sc.exe` and `CommandLine=sc.exe create ExampleSvc binPath= C:\Temp\agent.exe` should match.  
+**Negative test:** A synthetic event with `Image=C:\Windows\System32\sc.exe` and `CommandLine=sc.exe query ExampleSvc` should not match.  
 **False positives / tuning:** Authorized software installs and endpoint-management tools. Review the service name, binary path, signer, parent process, invoking account, change records, and whether the binary path is writable by unprivileged users.
 
 ## Validation notes
