@@ -12,6 +12,7 @@ Practical work focused on SOC Tier 2 investigation, detection engineering, threa
 | [SOC Investigation Lab](./soc-investigation-lab/) | Alert triage and evidence-led investigations | [Synthetic case study: encoded PowerShell alert](./soc-investigation-lab/cases/CASE-001-encoded-powershell.md) and reusable case-report template |
 | [Threat Hunting Lab](./threat-hunting-lab/) | Hypothesis-driven hunts and telemetry requirements | [Hunt 001: contextual PowerShell risk](./threat-hunting-lab/hunts/HUNT-001-encoded-powershell.md) and hunt-plan template |
 | [Incident Response Playbooks](./incident-response-playbooks/) | Escalation, containment, recovery, and lessons learned | Playbook template |
+| [SOC Investigation Playbooks](./soc-investigation-playbooks/) | Tier 1/Tier 2 investigations for Windows, Active Directory, Sysmon, and Splunk | 12 scenario playbooks with SPL pivots, ATT&CK mapping, escalation criteria, and incident-report templates |
 | [MITRE ATT&CK Coverage](./mitre-attack-coverage/) | Traceable technique mapping and evidence states | Initial candidate coverage matrix |
 | [Profile README draft](./profile-README/README.md) | Public-facing portfolio overview | Draft ready to adapt to the special profile repository |
 
