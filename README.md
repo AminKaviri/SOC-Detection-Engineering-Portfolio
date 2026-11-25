@@ -9,6 +9,7 @@ Practical work focused on SOC Tier 2 investigation, detection engineering, threa
 | Project | Focus | Current evidence |
 |---|---|---|
 | [Sigma Detection Engineering](./sigma-detection-engineering/) | Detection logic, synthetic fixtures, basic content validation | Three candidate Sigma rules; YAML/metadata validator; executable positive/negative fixture assertions for the encoded-PowerShell rule; [Splunk SPL companion queries](./sigma-detection-engineering/splunk/README.md); [false-positive analysis](./sigma-detection-engineering/docs/false-positive-analysis.md) |
+| [Splunk Dashboard: Servers Outbound Connections](./splunk-dashboards/servers-outbound-connections/README.md) | Monitoring outbound traffic from Windows and Linux servers to external IPs | Dashboard overview, panels, data assumptions, exclusions, and deployment notes |
 | [SOC Investigation Lab](./soc-investigation-lab/) | Alert triage and evidence-led investigations | [Synthetic case study: encoded PowerShell alert](./soc-investigation-lab/cases/CASE-001-encoded-powershell.md) and reusable case-report template |
 | [Threat Hunting Lab](./threat-hunting-lab/) | Hypothesis-driven hunts and telemetry requirements | [Hunt 001: contextual PowerShell risk](./threat-hunting-lab/hunts/HUNT-001-encoded-powershell.md) and hunt-plan template |
 | [Incident Response Playbooks](./incident-response-playbooks/) | Escalation, containment, recovery, and lessons learned | Playbook template |
@@ -36,6 +37,8 @@ The GitHub Actions workflow validates Sigma YAML/metadata and executes narrow po
 - [x] Add Splunk SPL companions for all three starter detections
 - [x] Publish a worked synthetic SOC investigation case study
 - [x] Document an initial threat-hunt workflow and tuning considerations
+- [x] Document the Servers Outbound Connections dashboard
+- [ ] Add the dashboard XML source file to this repository
 - [ ] Add actual Sigma backend conversion and representative event-replay tests
 - [ ] Expand ATT&CK mappings based on test evidence rather than tags alone
 
