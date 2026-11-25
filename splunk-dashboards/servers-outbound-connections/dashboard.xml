@@ -16,9 +16,413 @@
       <title>Windows - Total Connections</title>
       <single>
         <search>
-          <query>| tstats summariesonly=true count from datamodel=Endpoint.Ports where nodename=Ports direction=outbound by Ports.dest_ip</query>
+          <query><![CDATA[
+| tstats summariesonly=true fillnull_value="N/A" count
+  FROM datamodel=Endpoint.Ports
+  WHERE (sourcetype="*sysmon*" OR sourcetype="*XmlWinEventLog*")
+        Ports.dest_port!=53
+        Ports.dest_port!=0
+  BY Ports.dest_ip Ports.EventCode Ports.Initiated
+| rename Ports.* AS *
+| where dest_ip!="N/A"
+| where NOT (tostring(EventCode)="3" AND lower(Initiated)!="true")
+| where NOT (
+      cidrmatch("10.0.0.0/8", dest_ip)
+      OR cidrmatch("172.16.0.0/12", dest_ip)
+      OR cidrmatch("192.168.0.0/16", dest_ip)
+      OR cidrmatch("127.0.0.0/8", dest_ip)
+      OR cidrmatch("169.254.0.0/16", dest_ip)
+      OR cidrmatch("100.64.0.0/10", dest_ip)
+      OR cidrmatch("224.0.0.0/4", dest_ip)
+      OR cidrmatch("fc00::/7", dest_ip)
+      OR cidrmatch("fe80::/10", dest_ip)
+      OR dest_ip="0.0.0.0"
+      OR dest_ip="255.255.255.255"
+      OR dest_ip="::1"
+      OR dest_ip="::"
+      OR dest_ip="0:0:0:0:0:0:0:1"
+    )
+| stats sum(count) as total
+| fillnull value=0 total
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
         </search>
+        <option name="useColors">1</option>
+        <option name="rangeValues">[0]</option>
+        <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
       </single>
     </panel>
+    <panel>
+      <title>Windows - Hosts</title>
+      <single>
+        <search>
+          <query><![CDATA[
+| tstats summariesonly=true fillnull_value="N/A" count
+  FROM datamodel=Endpoint.Ports
+  WHERE (sourcetype="*sysmon*" OR sourcetype="*XmlWinEventLog*")
+        Ports.dest_port!=53
+        Ports.dest_port!=0
+  BY Ports.dest Ports.dest_ip Ports.EventCode Ports.Initiated
+| rename Ports.* AS *
+| where dest_ip!="N/A"
+| where NOT (tostring(EventCode)="3" AND lower(Initiated)!="true")
+| where NOT (
+      cidrmatch("10.0.0.0/8", dest_ip)
+      OR cidrmatch("172.16.0.0/12", dest_ip)
+      OR cidrmatch("192.168.0.0/16", dest_ip)
+      OR cidrmatch("127.0.0.0/8", dest_ip)
+      OR cidrmatch("169.254.0.0/16", dest_ip)
+      OR cidrmatch("100.64.0.0/10", dest_ip)
+      OR cidrmatch("224.0.0.0/4", dest_ip)
+      OR cidrmatch("fc00::/7", dest_ip)
+      OR cidrmatch("fe80::/10", dest_ip)
+      OR dest_ip="0.0.0.0"
+      OR dest_ip="255.255.255.255"
+      OR dest_ip="::1"
+      OR dest_ip="::"
+      OR dest_ip="0:0:0:0:0:0:0:1"
+    )
+| stats dc(dest) as hosts
+| fillnull value=0 hosts
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
+        </search>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Windows - Unique External IPs</title>
+      <single>
+        <search>
+          <query><![CDATA[
+| tstats summariesonly=true fillnull_value="N/A" count
+  FROM datamodel=Endpoint.Ports
+  WHERE (sourcetype="*sysmon*" OR sourcetype="*XmlWinEventLog*")
+        Ports.dest_port!=53
+        Ports.dest_port!=0
+  BY Ports.dest_ip Ports.EventCode Ports.Initiated
+| rename Ports.* AS *
+| where dest_ip!="N/A"
+| where NOT (tostring(EventCode)="3" AND lower(Initiated)!="true")
+| where NOT (
+      cidrmatch("10.0.0.0/8", dest_ip)
+      OR cidrmatch("172.16.0.0/12", dest_ip)
+      OR cidrmatch("192.168.0.0/16", dest_ip)
+      OR cidrmatch("127.0.0.0/8", dest_ip)
+      OR cidrmatch("169.254.0.0/16", dest_ip)
+      OR cidrmatch("100.64.0.0/10", dest_ip)
+      OR cidrmatch("224.0.0.0/4", dest_ip)
+      OR cidrmatch("fc00::/7", dest_ip)
+      OR cidrmatch("fe80::/10", dest_ip)
+      OR dest_ip="0.0.0.0"
+      OR dest_ip="255.255.255.255"
+      OR dest_ip="::1"
+      OR dest_ip="::"
+      OR dest_ip="0:0:0:0:0:0:0:1"
+    )
+| stats dc(dest_ip) as external_ips
+| fillnull value=0 external_ips
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
+        </search>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Windows - Top Processes</title>
+      <chart>
+        <search>
+          <query><![CDATA[
+| tstats summariesonly=true fillnull_value="N/A" count
+  FROM datamodel=Endpoint.Ports
+  WHERE (sourcetype="*sysmon*" OR sourcetype="*XmlWinEventLog*")
+        Ports.dest_port!=53
+        Ports.dest_port!=0
+  BY Ports.process_name Ports.dest_ip Ports.EventCode Ports.Initiated
+| rename Ports.* AS *
+| where dest_ip!="N/A"
+| where NOT (tostring(EventCode)="3" AND lower(Initiated)!="true")
+| where NOT (
+      cidrmatch("10.0.0.0/8", dest_ip)
+      OR cidrmatch("172.16.0.0/12", dest_ip)
+      OR cidrmatch("192.168.0.0/16", dest_ip)
+      OR cidrmatch("127.0.0.0/8", dest_ip)
+      OR cidrmatch("169.254.0.0/16", dest_ip)
+      OR cidrmatch("100.64.0.0/10", dest_ip)
+      OR cidrmatch("224.0.0.0/4", dest_ip)
+      OR cidrmatch("fc00::/7", dest_ip)
+      OR cidrmatch("fe80::/10", dest_ip)
+      OR dest_ip="0.0.0.0"
+      OR dest_ip="255.255.255.255"
+      OR dest_ip="::1"
+      OR dest_ip="::"
+      OR dest_ip="0:0:0:0:0:0:0:1"
+    )
+| stats sum(count) as connections by process_name
+| sort 0 - connections
+| head 10
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
+        </search>
+        <option name="charting.chart">bar</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
   </row>
+  <row>
+    <panel>
+      <title>Windows - Outbound Connections to External IPs (Sysmon EventCode 3 only with Initiated=true)</title>
+      <table>
+        <search>
+          <query><![CDATA[
+| tstats summariesonly=true fillnull_value="N/A" count earliest(_time) as first_seen latest(_time) as last_seen
+  FROM datamodel=Endpoint.Ports
+  WHERE (sourcetype="*sysmon*" OR sourcetype="*XmlWinEventLog*")
+        Ports.dest_port!=53
+        Ports.dest_port!=0
+  BY Ports.dest Ports.user Ports.process_name Ports.dest_ip Ports.dest_port Ports.src Ports.EventCode Ports.Initiated
+| rename Ports.* AS *
+| where dest_ip!="N/A"
+| where NOT (tostring(EventCode)="3" AND lower(Initiated)!="true")
+| where NOT (
+      cidrmatch("10.0.0.0/8", dest_ip)
+      OR cidrmatch("172.16.0.0/12", dest_ip)
+      OR cidrmatch("192.168.0.0/16", dest_ip)
+      OR cidrmatch("127.0.0.0/8", dest_ip)
+      OR cidrmatch("169.254.0.0/16", dest_ip)
+      OR cidrmatch("100.64.0.0/10", dest_ip)
+      OR cidrmatch("224.0.0.0/4", dest_ip)
+      OR cidrmatch("fc00::/7", dest_ip)
+      OR cidrmatch("fe80::/10", dest_ip)
+      OR dest_ip="0.0.0.0"
+      OR dest_ip="255.255.255.255"
+      OR dest_ip="::1"
+      OR dest_ip="::"
+      OR dest_ip="0:0:0:0:0:0:0:1"
+    )
+| sort 0 - last_seen
+| eval first_seen=strftime(first_seen, "%Y-%m-%d %H:%M:%S"), last_seen=strftime(last_seen, "%Y-%m-%d %H:%M:%S")
+| table first_seen last_seen dest user process_name dest_ip dest_port EventCode Initiated src count
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ===================== Linux ===================== -->
+  <row>
+    <panel>
+      <title>Linux - Total Connections</title>
+      <single>
+        <search>
+          <query><![CDATA[
+| tstats summariesonly=true fillnull_value="N/A" count
+  FROM datamodel=Endpoint.Ports
+  WHERE (sourcetype="*auditbeat*" OR sourcetype="*auditd*")
+        Ports.dest_port!=53
+        Ports.dest_port!=0
+  BY Ports.dest_ip
+| rename Ports.* AS *
+| where dest_ip!="N/A"
+| where NOT (
+      cidrmatch("10.0.0.0/8", dest_ip)
+      OR cidrmatch("172.16.0.0/12", dest_ip)
+      OR cidrmatch("192.168.0.0/16", dest_ip)
+      OR cidrmatch("127.0.0.0/8", dest_ip)
+      OR cidrmatch("169.254.0.0/16", dest_ip)
+      OR cidrmatch("100.64.0.0/10", dest_ip)
+      OR cidrmatch("224.0.0.0/4", dest_ip)
+      OR cidrmatch("fc00::/7", dest_ip)
+      OR cidrmatch("fe80::/10", dest_ip)
+      OR dest_ip="0.0.0.0"
+      OR dest_ip="255.255.255.255"
+      OR dest_ip="::1"
+      OR dest_ip="::"
+      OR dest_ip="0:0:0:0:0:0:0:1"
+    )
+| stats sum(count) as total
+| fillnull value=0 total
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
+        </search>
+        <option name="useColors">1</option>
+        <option name="rangeValues">[0]</option>
+        <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Linux - Hosts</title>
+      <single>
+        <search>
+          <query><![CDATA[
+| tstats summariesonly=true fillnull_value="N/A" count
+  FROM datamodel=Endpoint.Ports
+  WHERE (sourcetype="*auditbeat*" OR sourcetype="*auditd*")
+        Ports.dest_port!=53
+        Ports.dest_port!=0
+  BY Ports.dest Ports.dest_ip
+| rename Ports.* AS *
+| where dest_ip!="N/A"
+| where NOT (
+      cidrmatch("10.0.0.0/8", dest_ip)
+      OR cidrmatch("172.16.0.0/12", dest_ip)
+      OR cidrmatch("192.168.0.0/16", dest_ip)
+      OR cidrmatch("127.0.0.0/8", dest_ip)
+      OR cidrmatch("169.254.0.0/16", dest_ip)
+      OR cidrmatch("100.64.0.0/10", dest_ip)
+      OR cidrmatch("224.0.0.0/4", dest_ip)
+      OR cidrmatch("fc00::/7", dest_ip)
+      OR cidrmatch("fe80::/10", dest_ip)
+      OR dest_ip="0.0.0.0"
+      OR dest_ip="255.255.255.255"
+      OR dest_ip="::1"
+      OR dest_ip="::"
+      OR dest_ip="0:0:0:0:0:0:0:1"
+    )
+| stats dc(dest) as hosts
+| fillnull value=0 hosts
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
+        </search>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Linux - Unique External IPs</title>
+      <single>
+        <search>
+          <query><![CDATA[
+| tstats summariesonly=true fillnull_value="N/A" count
+  FROM datamodel=Endpoint.Ports
+  WHERE (sourcetype="*auditbeat*" OR sourcetype="*auditd*")
+        Ports.dest_port!=53
+        Ports.dest_port!=0
+  BY Ports.dest_ip
+| rename Ports.* AS *
+| where dest_ip!="N/A"
+| where NOT (
+      cidrmatch("10.0.0.0/8", dest_ip)
+      OR cidrmatch("172.16.0.0/12", dest_ip)
+      OR cidrmatch("192.168.0.0/16", dest_ip)
+      OR cidrmatch("127.0.0.0/8", dest_ip)
+      OR cidrmatch("169.254.0.0/16", dest_ip)
+      OR cidrmatch("100.64.0.0/10", dest_ip)
+      OR cidrmatch("224.0.0.0/4", dest_ip)
+      OR cidrmatch("fc00::/7", dest_ip)
+      OR cidrmatch("fe80::/10", dest_ip)
+      OR dest_ip="0.0.0.0"
+      OR dest_ip="255.255.255.255"
+      OR dest_ip="::1"
+      OR dest_ip="::"
+      OR dest_ip="0:0:0:0:0:0:0:1"
+    )
+| stats dc(dest_ip) as external_ips
+| fillnull value=0 external_ips
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
+        </search>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Linux - Top Processes</title>
+      <chart>
+        <search>
+          <query><![CDATA[
+| tstats summariesonly=true fillnull_value="N/A" count
+  FROM datamodel=Endpoint.Ports
+  WHERE (sourcetype="*auditbeat*" OR sourcetype="*auditd*")
+        Ports.dest_port!=53
+        Ports.dest_port!=0
+  BY Ports.process_name Ports.dest_ip
+| rename Ports.* AS *
+| where dest_ip!="N/A"
+| where NOT (
+      cidrmatch("10.0.0.0/8", dest_ip)
+      OR cidrmatch("172.16.0.0/12", dest_ip)
+      OR cidrmatch("192.168.0.0/16", dest_ip)
+      OR cidrmatch("127.0.0.0/8", dest_ip)
+      OR cidrmatch("169.254.0.0/16", dest_ip)
+      OR cidrmatch("100.64.0.0/10", dest_ip)
+      OR cidrmatch("224.0.0.0/4", dest_ip)
+      OR cidrmatch("fc00::/7", dest_ip)
+      OR cidrmatch("fe80::/10", dest_ip)
+      OR dest_ip="0.0.0.0"
+      OR dest_ip="255.255.255.255"
+      OR dest_ip="::1"
+      OR dest_ip="::"
+      OR dest_ip="0:0:0:0:0:0:0:1"
+    )
+| stats sum(count) as connections by process_name
+| sort 0 - connections
+| head 10
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
+        </search>
+        <option name="charting.chart">bar</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Linux - Outbound Connections to External IPs (auditd / auditbeat)</title>
+      <table>
+        <search>
+          <query><![CDATA[
+| tstats summariesonly=true fillnull_value="N/A" count earliest(_time) as first_seen latest(_time) as last_seen
+  FROM datamodel=Endpoint.Ports
+  WHERE (sourcetype="*auditbeat*" OR sourcetype="*auditd*")
+        Ports.dest_port!=53
+        Ports.dest_port!=0
+  BY Ports.dest Ports.user Ports.process_name Ports.dest_ip Ports.dest_port Ports.src
+| rename Ports.* AS *
+| where dest_ip!="N/A"
+| where NOT (
+      cidrmatch("10.0.0.0/8", dest_ip)
+      OR cidrmatch("172.16.0.0/12", dest_ip)
+      OR cidrmatch("192.168.0.0/16", dest_ip)
+      OR cidrmatch("127.0.0.0/8", dest_ip)
+      OR cidrmatch("169.254.0.0/16", dest_ip)
+      OR cidrmatch("100.64.0.0/10", dest_ip)
+      OR cidrmatch("224.0.0.0/4", dest_ip)
+      OR cidrmatch("fc00::/7", dest_ip)
+      OR cidrmatch("fe80::/10", dest_ip)
+      OR dest_ip="0.0.0.0"
+      OR dest_ip="255.255.255.255"
+      OR dest_ip="::1"
+      OR dest_ip="::"
+      OR dest_ip="0:0:0:0:0:0:0:1"
+    )
+| sort 0 - last_seen
+| eval first_seen=strftime(first_seen, "%Y-%m-%d %H:%M:%S"), last_seen=strftime(last_seen, "%Y-%m-%d %H:%M:%S")
+| table first_seen last_seen dest user process_name dest_ip dest_port src count
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+
 </form>
