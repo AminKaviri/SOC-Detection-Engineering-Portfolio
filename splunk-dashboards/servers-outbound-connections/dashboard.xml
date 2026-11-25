@@ -1,0 +1,24 @@
+<form version="1.1" theme="dark">
+  <label>Outbound Connections to External IPs - Servers</label>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="time" token="tok_time">
+      <label>Time Range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+
+  <!-- ===================== Windows ===================== -->
+  <row>
+    <panel>
+      <title>Windows - Total Connections</title>
+      <single>
+        <search>
+          <query>| tstats summariesonly=true count from datamodel=Endpoint.Ports where nodename=Ports direction=outbound by Ports.dest_ip</query>
+        </search>
+      </single>
+    </panel>
+  </row>
+</form>
